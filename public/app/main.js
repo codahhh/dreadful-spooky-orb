@@ -238,7 +238,7 @@ document.addEventListener('visibilitychange', () => {
   if (!document.hidden) window.dispatchEvent(new Event('resize'));
 });
 
-console.info('%cWindows 10 (browser build)', 'font:600 14px "Segoe UI";color:#0078d7', '\nType Ctrl+Shift+Esc, or press Win+E. Enjoy.');
+console.info('%cWindows Browser (Windows 10, browser build)', 'font:600 14px "Segoe UI";color:#0078d7', '\nType Ctrl+Shift+Esc, or press Win+E. Enjoy.');
 
 /* debug / automation hook (harmless in production) */
 window.__WIN10 = { launchApp, state, bus, minimizeAll, restoreAll };

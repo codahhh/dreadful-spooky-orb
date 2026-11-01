@@ -1,6 +1,10 @@
-# Windows 10 — in the browser
+# Windows Browser — Windows 10, in the browser
 
 **Live:** https://windows10-in-browser.vercel.app
+
+> The repository was previously called `dreadful-spooky-orb`. Renaming it to `windows-browser`
+> needs a GitHub token with repository administration rights (the automation token only has
+> contents/PR permissions) — GitHub *Settings → General → Repository name* does it in one click.
 
 A complete, interactive Windows 10 desktop environment built from scratch with plain HTML, CSS and
 JavaScript ES modules. No frameworks, no build step, no network calls — every icon is inline SVG and
