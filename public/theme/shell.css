@@ -171,11 +171,13 @@ body.accent-taskbar .tb-search{background:rgba(255,255,255,.14)}
 .sm-rail .spacer{flex:1}
 .sm-user{width:32px;height:32px;border-radius:50%;background:linear-gradient(160deg,#4ea6e6,#0b5a9c);color:#fff;font-size:14px;font-weight:500;display:grid;place-items:center;margin-bottom:6px}
 .sm-main{flex:1;display:flex;flex-direction:column;min-width:0;min-height:0}
-.sm-apps{flex:1;overflow-y:auto;padding:8px 0 8px 4px;position:relative}
-.sm-apps .sm-letter{font-size:11px;color:#bfbfbf;padding:8px 12px 4px;font-weight:600;letter-spacing:.4px;position:sticky;top:0;background:linear-gradient(rgba(28,28,28,.98),rgba(28,28,28,.9));z-index:1}
-.sm-app{display:flex;align-items:center;gap:12px;height:34px;padding:0 10px 0 12px;color:#f0f0f0;font-size:12.5px;width:100%;text-align:left;border-radius:2px}
+.sm-apps{flex:1;overflow-y:auto;padding:6px 6px 14px;position:relative;scroll-behavior:smooth}
+.sm-apps-head{display:flex;justify-content:space-between;align-items:center;font-size:11px;letter-spacing:.6px;text-transform:uppercase;color:#b9b9b9;font-weight:600;padding:10px 8px 6px}
+.sm-apps .sm-letter{font-size:11px;color:#bfbfbf;padding:12px 10px 6px;font-weight:600;letter-spacing:.4px;position:sticky;top:0;background:linear-gradient(rgba(28,28,28,.98),rgba(28,28,28,.9));z-index:1}
+.sm-app{display:flex;align-items:center;gap:12px;height:40px;min-height:40px;padding:0 12px;margin:1px 0 3px;color:#f0f0f0;font-size:13px;width:100%;text-align:left;border-radius:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:background .1s}
 .sm-app:hover{background:rgba(255,255,255,.11)}
-.sm-app svg,.sm-app .ico{width:20px;height:20px;flex:0 0 20px}
+.sm-app svg,.sm-app .ico{width:22px;height:22px;flex:0 0 22px}
+.sm-app:active{background:rgba(255,255,255,.16)}
 .sm-app .sub{margin-left:auto;color:#9a9a9a;font-size:11px}
 .sm-right{width:302px;flex:0 0 302px;padding:14px 14px 10px;display:flex;flex-direction:column;gap:10px;overflow-y:auto;min-height:0}
 .sm-tiles{display:grid;grid-template-columns:repeat(3,1fr);grid-auto-rows:72px;gap:2px}

@@ -67,7 +67,7 @@ export function launch() {
           ['terminal', 'Terminal'], ['taskmanager', 'Task Manager'], ['photos', 'Photos'],
           ['media', 'Groove Music'], ['mail', 'Mail'], ['calendar', 'Calendar'],
           ['weather', 'Weather'], ['store', 'Microsoft Store'], ['minesweeper', 'Minesweeper'],
-          ['recycle', 'Recycle Bin'],
+          ['recycle', 'Recycle Bin'], ['credits', 'Credits'],
         ].map(([id, name]) => `<button class="btn" data-open="${id}" style="display:flex;align-items:center;gap:8px;height:34px;padding:0 8px;font-size:11.5px;justify-content:flex-start">
           <span style="width:18px;height:18px;display:inline-flex;flex:0 0 18px">${icon(id === 'recycle' ? 'recycle' : id === 'minesweeper' ? 'mine' : id === 'taskmanager' ? 'taskmgr' : id)}</span>${name}</button>`).join('')}
       </div>

@@ -19,12 +19,13 @@ import * as mail from './mail.js';
 import * as weather from './weather.js';
 import * as calendar from './calendar.js';
 import * as welcome from './welcome.js';
+import * as credits from './credits.js';
 
 import { setLauncher } from '../launcher.js';
 
 const MODULES = {
   explorer, notepad, calculator, paint, settings, edge, terminal, taskmanager,
-  photos, minesweeper, store, media, recycle, mail, weather, calendar, welcome,
+  photos, minesweeper, store, media, recycle, mail, weather, calendar, welcome, credits,
 };
 
 export function allApps() {

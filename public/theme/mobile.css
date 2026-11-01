@@ -131,8 +131,11 @@ button,
   .sm-rail .spacer { flex: 1; }
   .sm-user { margin: 0 4px 0 0; width: 30px; height: 30px; }
   .sm-main { flex: 1 1 auto; min-height: 0; }
-  .sm-apps { padding: 6px 0 10px; }
-  .sm-app { height: 42px; font-size: 13px; }
+  .sm-apps { padding: 6px 8px 16px; }
+  .sm-app { height: 50px; min-height: 50px; font-size: 14.5px; margin-bottom: 5px; border-radius: 6px; }
+  .sm-app svg, .sm-app .ico { width: 24px; height: 24px; flex: 0 0 24px; }
+  .sm-apps-head { font-size: 11.5px; padding-top: 12px; }
+  .sm-apps .sm-letter { font-size: 11.5px; padding-top: 14px; }
   .sm-right {
     display: flex; width: 100%; flex: 0 0 auto;
     max-height: 36dvh; padding: 10px 10px calc(10px + env(safe-area-inset-bottom, 0px));

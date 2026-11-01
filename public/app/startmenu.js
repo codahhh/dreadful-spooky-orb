@@ -75,12 +75,14 @@ function render() {
       <button id="sm-docs" title="Documents">${icon('documents')}</button>
       <button id="sm-pics" title="Pictures">${icon('pictures')}</button>
       <div class="spacer"></div>
+      <button id="sm-credits" title="Credits">${icon('star')}</button>
       <button id="sm-settings" title="Settings">${icon('settings')}</button>
       <button id="sm-power" title="Power">${icon('power')}</button>
     </div>
     <div class="sm-main">
       <div class="sm-apps" id="sm-apps">
         <button class="sm-search-mini" id="sm-search-open">${icon('search')}<span>Search apps, files and settings</span></button>
+        <div class="sm-apps-head"><span>All apps</span><span>${apps.length} installed</span></div>
         ${list}
         <div style="height:8px"></div>
       </div>
@@ -97,6 +99,7 @@ function render() {
 
 function bind() {
   const root = menu();
+  root.querySelector('#sm-credits')?.addEventListener('click', () => { openApp('credits'); closeStart(); });
   root.querySelectorAll('[data-app]').forEach((b) => {
     b.addEventListener('click', () => {
       openApp(b.dataset.app);
