@@ -128,6 +128,13 @@ assets/*.svg          wallpapers
   desktop icon positions, file system contents and the first-run flag all come back correctly.
 - CSS audit: balanced braces, no undefined custom properties, all 123 icon glyphs resolve.
 
+
+## Deploying
+
+The repo ships a `vercel.json` so the static site can be published as-is: no install step, the
+build command simply copies `index.html`, `css/`, `js/` and `assets/` into `dist/`, which Vercel
+serves. Any static host works the same way — there is nothing to compile.
+
 ## Notes
 
 - Everything is local: no external fonts, CDNs, analytics or requests of any kind.
