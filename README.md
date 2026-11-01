@@ -78,7 +78,7 @@ All seventeen apps are real, not screenshots, and share the same virtual file sy
 - **Calculator** — standard/scientific, history, memory keys, keyboard input
 - **Paint** — pen, eraser, line, rectangle, ellipse, flood-free fill colours, sizes, save as PNG into the VFS, clear
 - **Settings** — System, Devices, Network, Personalisation (wallpaper, accent, theme, transparency, icon visibility), Accounts, Time & Language, Privacy, Update, About
-- **Microsoft Edge** — tabs, address bar with a small set of fake-but-working pages (`about:home`, `settings`, `theverge`, search results…), back/forward/refresh
+- **Microsoft Edge** — a working browser over a local internet: eleven sites (Bing search, a five-article Wikipedia, GitHub, Orb News, YouTube with a watch page, Store, Weather, Minesweeper, Microsoft), tabs, history, favourites that persist, downloads, an internal `edge://` settings page, and `Ctrl+L/T/W`, `Alt+←/→`
 - **Terminal** — ~25 commands (`dir`, `cd`, `type`, `mkdir`, `echo`, `del`, `cls`, `help`, `whoami`, `systeminfo`, `ipconfig`, `ping`, `tasklist`, `neofetch`, `open <app>`, `calc`, `theme`, `exit`…), command history with ↑/↓
 - **Task Manager** — live process list (CPU/memory per open app + system processes), end task, performance graphs, startup tab
 - **Photos** — gallery from Pictures + saved images, viewer with zoom, next/prev, delete, set as wallpaper
