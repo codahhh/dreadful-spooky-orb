@@ -1,5 +1,7 @@
 # Windows 10 — in the browser
 
+**Live:** https://windows10-in-browser.vercel.app
+
 A complete, interactive Windows 10 desktop environment built from scratch with plain HTML, CSS and
 JavaScript ES modules. No frameworks, no build step, no network calls — every icon is inline SVG and
 every wallpaper ships with the repo.
