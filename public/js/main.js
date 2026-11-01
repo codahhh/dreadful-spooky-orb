@@ -176,9 +176,53 @@ function typingTarget() {
 
 // Prevent the browser's own context menu except inside text inputs
 window.addEventListener('contextmenu', (e) => {
-  const inField = e.target.closest('input, textarea, [contenteditable="true"]');
+  const t = e.target instanceof Element ? e.target : null;
+  const inField = t && t.closest('input, textarea, [contenteditable="true"]');
   if (!inField) e.preventDefault();
 });
+
+/* ---------- touch: long press fires a context menu (iOS has no native one) ---------- */
+let lpTimer = null;
+let lpFired = false;
+let lpOrigin = { x: 0, y: 0 };
+
+function cancelLongPress() {
+  if (lpTimer) { clearTimeout(lpTimer); lpTimer = null; }
+}
+
+window.addEventListener('pointerdown', (e) => {
+  if (e.pointerType === 'mouse') return;
+  const target = e.target instanceof Element ? e.target : null;
+  if (!target) return;
+  lpFired = false;
+  lpOrigin = { x: e.clientX, y: e.clientY };
+  cancelLongPress();
+  lpTimer = setTimeout(() => {
+    lpTimer = null;
+    lpFired = true;
+    target.dispatchEvent(new MouseEvent('contextmenu', {
+      bubbles: true, cancelable: true, composed: true,
+      clientX: lpOrigin.x, clientY: lpOrigin.y, button: 2,
+    }));
+    if (navigator.vibrate) { try { navigator.vibrate(12); } catch (_) {} }
+  }, 480);
+}, true);
+
+window.addEventListener('pointermove', (e) => {
+  if (!lpTimer) return;
+  if (Math.hypot(e.clientX - lpOrigin.x, e.clientY - lpOrigin.y) > 12) cancelLongPress();
+}, true);
+window.addEventListener('pointerup', cancelLongPress, true);
+window.addEventListener('pointercancel', cancelLongPress, true);
+window.addEventListener('scroll', cancelLongPress, true);
+
+// swallow the click that a long press would otherwise turn into a tap
+window.addEventListener('click', (e) => {
+  if (!lpFired) return;
+  lpFired = false;
+  e.stopPropagation();
+  e.preventDefault();
+}, true);
 
 // Focus the desktop when clicking empty space so shortcuts keep working
 document.getElementById('desktop').addEventListener('pointerdown', (e) => {

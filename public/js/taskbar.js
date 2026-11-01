@@ -4,7 +4,7 @@
 
 import { state, save, updateSettings } from './store.js';
 import { icon } from './icons.js';
-import { el, esc, bus, pad2 } from './utils.js';
+import { el, esc, bus, pad2, isTouchUI } from './utils.js';
 import { allWindows, focusedWindow, minimizeAll, restoreAll, visibleWindows } from './wm.js';
 import { openApp } from './launcher.js';
 import { appMeta } from './apps/registry.js';
@@ -68,6 +68,7 @@ export function refreshTasks() {
 
     btn.addEventListener('pointerenter', () => {
       clearTimeout(previewTimer);
+      if (isTouchUI()) return; // hover previews make no sense on a touch screen
       previewTimer = setTimeout(() => showPreview(btn, id, meta, wins), 380);
     });
     btn.addEventListener('pointerleave', () => {
@@ -137,7 +138,8 @@ function closeTrayFlyout() {
 }
 function outsideTray(e) {
   const f = document.getElementById('tray-flyout');
-  if (f.contains(e.target) || e.target.closest('#tray')) return;
+  const t = e.target instanceof Element ? e.target : null;
+  if (!t || f.contains(t) || t.closest('#tray')) return;
   closeTrayFlyout();
 }
 

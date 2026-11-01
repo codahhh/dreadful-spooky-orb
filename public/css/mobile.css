@@ -1,0 +1,250 @@
+/* ============================================================
+   Touch / small-screen layer
+   Loaded last so it can correct the desktop-first rules above.
+   ============================================================ */
+
+/* ---------- viewport units & safe areas ---------- */
+#screen {
+  height: 100vh;
+  height: 100dvh;
+}
+#desktop {
+  bottom: calc(var(--taskbar-h) + env(safe-area-inset-bottom, 0px));
+}
+#taskbar {
+  height: calc(var(--taskbar-h) + env(safe-area-inset-bottom, 0px));
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  padding-left: env(safe-area-inset-left, 0px);
+  padding-right: env(safe-area-inset-right, 0px);
+}
+#start-menu,
+#search-panel,
+#action-center,
+#calendar-flyout,
+#snap-assist,
+#task-view {
+  max-height: calc(100dvh - var(--taskbar-h));
+}
+
+/* ---------- touch ergonomics ---------- */
+button,
+.task,
+.sm-app,
+.sm-rail button,
+.d-icon,
+.exp-row,
+.exp-tile,
+.tile,
+.menu-item,
+[role="button"] {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+.tb-btn,
+.task,
+.win-btn,
+.sm-rail button,
+.menu-item,
+.tray-btn {
+  min-height: 34px;
+}
+.win-titlebar { touch-action: none; }
+
+/* pressing feedback for touch (no hover on phones) */
+@media (hover: none) {
+  .d-icon:active,
+  .sm-app:active,
+  .exp-row:active,
+  .exp-tile:active,
+  .tile:active,
+  .menu-item:active,
+  .set-item:active,
+  .side-item:active,
+  .task:active {
+    background: rgba(127, 127, 127, .28) !important;
+  }
+  .tile:active { filter: brightness(.88); }
+}
+
+/* context menus must never overflow the screen */
+#screen > .menu,
+.menu {
+  max-height: calc(100dvh - 24px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+/* dialogs fit any screen */
+.dialog {
+  min-width: 0;
+  width: min(440px, calc(100vw - 24px));
+  max-width: calc(100vw - 24px);
+}
+.dialog .d-body,
+.dialog .dialog-body {
+  max-height: 55dvh;
+  overflow: auto;
+}
+
+/* ============================================================
+   Narrow screens
+   ============================================================ */
+@media (max-width: 760px) {
+  :root { --taskbar-h: 44px; }
+
+  /* inputs at >=16px stop iOS Safari from zooming the page */
+  input, textarea, select { font-size: 16px !important; }
+
+  /* ---------- taskbar ---------- */
+  #taskbar { gap: 0; }
+  .tb-btn, .tb-search { width: 40px; min-width: 40px; height: 100%; }
+  .tb-search-text, .tb-mic { display: none; }
+  #tasks { overflow-x: auto; overflow-y: hidden; scrollbar-width: none; -ms-overflow-style: none; }
+  #tasks::-webkit-scrollbar { display: none; }
+  .task { width: 40px; min-width: 40px; padding: 0; }
+  #tray-lang, #tray-icons, #clock-date { display: none; }
+  #clock { min-width: 56px; padding: 0 6px; }
+  #tray { gap: 0; }
+  .tray-btn { width: 34px; min-width: 34px; }
+  #tray-showdesk { width: 8px; }
+  #taskbar .tb-left { gap: 0; }
+
+  /* ---------- start menu: full sheet, tiles at the bottom ---------- */
+  #start-menu {
+    left: 0; right: 0;
+    width: 100vw;
+    height: calc(100dvh - var(--taskbar-h) - env(safe-area-inset-bottom, 0px));
+    border-radius: 0;
+    border-left: 0; border-right: 0;
+    flex-direction: column;
+  }
+  .sm-rail {
+    width: 100%; flex: 0 0 46px;
+    flex-direction: row; align-items: center;
+    padding: 0 6px; gap: 2px;
+    border-right: 0; border-bottom: 1px solid rgba(255, 255, 255, .08);
+  }
+  .sm-rail button { width: 38px; height: 38px; }
+  .sm-rail .spacer { flex: 1; }
+  .sm-user { margin: 0 4px 0 0; width: 30px; height: 30px; }
+  .sm-main { flex: 1 1 auto; min-height: 0; }
+  .sm-apps { padding: 6px 0 10px; }
+  .sm-app { height: 42px; font-size: 13px; }
+  .sm-right {
+    display: flex; width: 100%; flex: 0 0 auto;
+    max-height: 36dvh; padding: 10px 10px calc(10px + env(safe-area-inset-bottom, 0px));
+    border-top: 1px solid rgba(255, 255, 255, .08);
+  }
+  .sm-tiles { grid-template-columns: repeat(3, 1fr); grid-auto-rows: 62px; gap: 4px; }
+  .tile .t-ico { width: 20px; height: 20px; }
+  .tile .t-ico svg { width: 20px; height: 20px; }
+  .tile.live .t-big { font-size: 20px; }
+  .sm-search-mini { margin-bottom: 6px; }
+
+  /* ---------- flyouts ---------- */
+  #search-panel {
+    left: 0; right: 0; width: 100vw;
+    height: calc(100dvh - var(--taskbar-h));
+    border-radius: 0;
+  }
+  #action-center {
+    left: 0; right: 0; width: 100vw;
+    height: calc(100dvh - var(--taskbar-h));
+    border-radius: 0;
+  }
+  #calendar-flyout {
+    left: 0; right: 0; width: 100vw;
+    max-height: calc(100dvh - var(--taskbar-h));
+    border-radius: 0;
+  }
+  .ac-quick { grid-template-columns: repeat(3, 1fr) !important; }
+  .toast { width: 100%; }
+  #toast-host { left: 8px; right: 8px; width: auto; }
+
+  /* ---------- task view ---------- */
+  #task-view { padding: 16px 14px 12px; }
+  .tv-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+  .tv-card .tv-preview { height: 92px; }
+
+  /* ---------- windows ---------- */
+  .win { min-width: 0; }
+  .win-titlebar { height: 36px; flex-basis: 36px; }
+  .win-btn { width: 42px; }
+  .win-body { overflow: auto; -webkit-overflow-scrolling: touch; }
+  .resize-handle { display: none; }
+
+  /* ---------- app layouts ---------- */
+  .exp-side { display: none; }
+  .exp-cols { display: none; }
+  .exp-search { display: none; }
+  .exp-row { height: 40px; }
+  .exp-row .date, .exp-row .type, .exp-row .size { display: none; }
+  .exp-nav { flex-wrap: wrap; row-gap: 4px; }
+  .exp-addr { flex: 1 1 100%; order: 3; margin-top: 2px; }
+
+  .set-side {
+    width: 100%; flex: 0 0 auto; display: flex;
+    overflow-x: auto; overflow-y: hidden;
+    border-right: 0; border-bottom: 1px solid var(--line);
+    padding: 4px;
+  }
+  .set-side .set-user, .set-side .set-nav { display: contents; }
+  .set-side .set-item { flex: 0 0 auto; white-space: nowrap; }
+  .set-main { padding: 14px 14px 32px; }
+  .set-kv { grid-template-columns: 1fr; }
+  .wall-grid { grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); }
+
+  .mail { flex-direction: column; }
+  .mail-list { width: 100%; flex: 0 0 auto; max-height: 42dvh; border-right: 0; border-bottom: 1px solid var(--line); }
+  .mail-read { padding: 14px; }
+
+  .store-side { display: none; }
+  .store-grid { grid-template-columns: 1fr 1fr; padding: 12px; }
+  .store-card { min-height: 0; }
+
+  .tm-cpu, .tm-mem, .tm-status { display: none !important; }
+  .tm-tab { flex: 1; }
+
+  .paint-ribbon { flex-wrap: wrap; row-gap: 4px; height: auto; padding: 4px 6px; }
+  .paint-tools { overflow-x: auto; }
+  .paint-canvas { max-width: 100%; }
+
+  .photos-grid { grid-template-columns: repeat(auto-fill, minmax(104px, 1fr)); padding: 10px; }
+  .photos-view { position: absolute; }
+
+  .weather .w-stats { grid-template-columns: 1fr; }
+  .weather .w-days { overflow-x: auto; }
+  .welcome { padding: 4px 2px; }
+  .welcome .tips { grid-template-columns: 1fr; }
+  .welcome h1 { font-size: 20px; }
+
+  /* toolbars get finger-sized targets */
+  .tb-icon { width: 34px; height: 34px; }
+  .exp-nav, .paint-ribbon, .photos-toolbar, .mail-toolbar { min-height: 44px; }
+  .paint-ribbon { align-items: center; }
+  .rb-group { flex-wrap: wrap; }
+  .btn { min-height: 32px; }
+  .calc-value { font-size: 34px; }
+  .calc-keys { gap: 3px; }
+  .calc-keys button { min-height: 44px; }
+
+  .edge-tabs { overflow-x: auto; }
+  .edge-side, .edge-nav-side { display: none; }
+  .term { font-size: 12px; }
+  .mine { padding: 8px; }
+  .mine-grid { width: min(92vw, 420px); height: min(92vw, 420px); }
+}
+
+@media (max-width: 420px) {
+  .tv-grid { grid-template-columns: 1fr; }
+  .sm-tiles { grid-auto-rows: 58px; }
+  .store-grid { grid-template-columns: 1fr; }
+  .ac-quick { grid-template-columns: repeat(2, 1fr) !important; }
+}
+
+/* landscape phones: keep the taskbar slim */
+@media (max-height: 460px) {
+  :root { --taskbar-h: 38px; }
+  #start-menu, #search-panel, #action-center { height: calc(100dvh - var(--taskbar-h)); }
+  .sm-right { max-height: 44dvh; }
+}

@@ -201,7 +201,8 @@ export function isStartOpen() { return open; }
 
 function outside(e) {
   const root = menu();
-  if (root.contains(e.target) || e.target.closest('#start-btn')) return;
+  const t = e.target instanceof Element ? e.target : null;
+  if (!t || root.contains(t) || t.closest('#start-btn')) return;
   if (e.target.closest('.menu')) return;
   closeStart();
 }

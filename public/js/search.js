@@ -183,7 +183,8 @@ export function toggleSearch() { open ? closeSearch() : showSearch(); }
 export function isSearchOpen() { return open; }
 
 function outside(e) {
-  if (panel().contains(e.target) || e.target.closest('#search-btn')) return;
+  const t = e.target instanceof Element ? e.target : null;
+  if (!t || panel().contains(t) || t.closest('#search-btn')) return;
   if (e.target.closest('.menu')) return;
   closeSearch();
 }

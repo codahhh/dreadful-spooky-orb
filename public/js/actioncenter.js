@@ -110,7 +110,8 @@ export function toggleAC() { open ? closeAC() : openAC(); }
 export function isACOpen() { return open; }
 
 function outside(e) {
-  if (panel().contains(e.target) || e.target.closest('#notif-btn') || e.target.closest('#tray')) return;
+  const t = e.target instanceof Element ? e.target : null;
+  if (!t || panel().contains(t) || t.closest('#notif-btn') || t.closest('#tray')) return;
   if (e.target.closest('.menu')) return;
   closeAC();
 }

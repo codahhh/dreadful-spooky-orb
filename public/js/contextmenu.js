@@ -24,7 +24,9 @@ export function closeMenus() {
 }
 
 function onOutside(e) {
-  if (!menus.some((m) => m.contains(e.target)) && !e.target.closest('.win-btn')) closeMenus();
+  const t = e.target instanceof Element ? e.target : null;
+  if (!t) { closeMenus(); return; }
+  if (!menus.some((m) => m.contains(t)) && !t.closest('.win-btn')) closeMenus();
 }
 function onKey(e) {
   if (e.key === 'Escape') { e.stopPropagation(); closeMenus(); }

@@ -216,6 +216,7 @@ Available commands
   taskkill <app>       Close a window by app id
   tree                 Directory tree
   open <app>           Launch an app (try: open notepad)
+  <app>                Any app name also works on its own (calc, notepad, settings…)
   apps                 List installed apps
   neofetch             System summary, ASCII art
   ver                  Windows version
@@ -375,6 +376,14 @@ Wireless LAN adapter Wi-Fi:
       try { commands[cmd](...rest); }
       catch (err) { print(String(err), 'err'); }
     } else {
+      // typing an app name on its own launches it: "calc", "notepad", "msedge"…
+      const alias = { calc: 'calculator', np: 'notepad', files: 'explorer', ps: 'terminal', tm: 'taskmanager', pics: 'photos', msedge: 'edge', mail: 'mail', store: 'store', weather: 'weather', settings: 'settings', paint: 'paint', mine: 'minesweeper', media: 'media', bin: 'recycle', calendar: 'calendar' };
+      const wanted = alias[cmd] || cmd;
+      const app = allApps().find((a) => a.id === wanted
+        || a.name.toLowerCase() === wanted
+        || a.name.toLowerCase().replace(/\s+/g, '') === wanted
+        || (wanted.length >= 3 && a.name.toLowerCase().startsWith(wanted)));
+      if (app) { commands.open(app.id); return; }
       print(`${cmd} : The term '${cmd}' is not recognized as the name of a cmdlet, function, script file, or operable program.`, 'err');
       print('Type "help" to see the commands that exist.', 'warn');
     }

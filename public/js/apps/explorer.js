@@ -4,7 +4,7 @@
 
 import { createWindow } from '../wm.js';
 import { icon } from '../icons.js';
-import { el, esc, fmtBytes, fmtDate, typeLabel, fileIconName, showDialog, promptDialog, bus } from '../utils.js';
+import { el, esc, fmtBytes, fmtDate, typeLabel, fileIconName, showDialog, promptDialog, bus, isTouchUI } from '../utils.js';
 import {
   state, list, getNode, mkdir, remove, rename, read, parentPath, baseName, splitPath, normPath, save, createFile,
 } from '../store.js';
@@ -317,6 +317,7 @@ function openExplorer(args) {
       renderFiles();
     });
     node.addEventListener('dblclick', (e) => { e.stopPropagation(); openItem(it); });
+    node.addEventListener('click', () => { if (isTouchUI()) openItem(it); });
     node.addEventListener('contextmenu', (e) => {
       e.preventDefault();
       e.stopPropagation();

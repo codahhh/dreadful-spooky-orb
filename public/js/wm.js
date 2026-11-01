@@ -131,6 +131,8 @@ export function createWindow(opts = {}) {
 
   wins.push(win);
   setRect(win, px, py, w, h);
+  // phones: apps get the whole work area, otherwise their toolbars are clipped
+  if (typeof window !== 'undefined' && window.innerWidth <= 760) setTimeout(() => { if (!win.closed) maximize(win); }, 0);
 
   // ---------- controls ----------
   el.querySelector('.min')?.addEventListener('click', (e) => { e.stopPropagation(); win.minimize(); });

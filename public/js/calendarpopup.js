@@ -86,7 +86,8 @@ export function toggleCal() { open ? closeCal() : openCal(); }
 export function isCalOpen() { return open; }
 
 function outside(e) {
-  if (panel().contains(e.target) || e.target.closest('#clock')) return;
+  const t = e.target instanceof Element ? e.target : null;
+  if (!t || panel().contains(t) || t.closest('#clock')) return;
   if (e.target.closest('.menu')) return;
   closeCal();
 }

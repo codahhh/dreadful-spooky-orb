@@ -132,6 +132,19 @@ export function promptDialog(title, value = '', label = 'Name') {
 
 export const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
+/* ---------- touch / small screen ---------- */
+export function isNarrow() {
+  return typeof window !== 'undefined' && window.innerWidth <= 760;
+}
+export function isTouchUI() {
+  if (typeof window === 'undefined') return false;
+  try {
+    return window.matchMedia('(pointer: coarse)').matches || isNarrow();
+  } catch (_) {
+    return isNarrow();
+  }
+}
+
 /** wrap a rounded rect path helper for canvas */
 export function fileKind(name = '') {
   const ext = name.split('.').pop().toLowerCase();

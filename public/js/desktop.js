@@ -3,6 +3,7 @@
    ============================================================ */
 
 import { state, save, emptyRecycle, recycleSize } from './store.js';
+import { isTouchUI } from './utils.js';
 import { icon } from './icons.js';
 import { openApp } from './launcher.js';
 import { openMenu } from './contextmenu.js';
@@ -96,8 +97,11 @@ function openItem(ic) {
   openApp(ic.appId, ic.args || {});
 }
 
+let iconDragged = false;
+
 function bindIcon(node, ic) {
   node.addEventListener('pointerdown', (e) => {
+    iconDragged = false;
     if (e.button === 2) {
       if (!selected.has(ic.id)) selectOnly(ic.id);
       return;
@@ -116,6 +120,12 @@ function bindIcon(node, ic) {
   });
 
   node.addEventListener('dblclick', (e) => { e.stopPropagation(); openItem(ic); });
+  // phones: a single tap opens (double-tap is unreliable on touch)
+  node.addEventListener('click', (e) => {
+    if (!isTouchUI() || iconDragged) return;
+    e.stopPropagation();
+    openItem(ic);
+  });
 
   node.addEventListener('keydown', (e) => {
     if (e.key === 'Enter') openItem(ic);
@@ -162,6 +172,7 @@ function startIconDrag(e, ic, node) {
   const onMove = (ev) => {
     if (!moving && Math.abs(ev.clientX - startX) + Math.abs(ev.clientY - startY) < 5) return;
     moving = true;
+    iconDragged = true;
     node.classList.add('dragging');
     node.style.left = clamp(ev.clientX - offX, 0, window.innerWidth - cw) + 'px';
     node.style.top = clamp(ev.clientY - offY, 0, window.innerHeight - TASKBAR - ch) + 'px';
