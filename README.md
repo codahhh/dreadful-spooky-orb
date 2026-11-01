@@ -99,24 +99,24 @@ Wipe everything from the console with `localStorage.clear()`.
 
 ```
 public/index.html            shell markup (lockscreen, desktop, taskbar, flyouts, panels)
-public/css/base.css          lock screen, desktop, wallpaper, common widgets
-public/css/shell.css         taskbar, start menu, search, action center, calendar, window chrome
-public/css/apps.css          per-app styles
-public/js/main.js            bootstrap, global hotkeys, debug hook (window.__WIN10)
-public/js/boot.js            boot → lock → sign-in sequence
-public/js/store.js           persisted state, file system API, settings, wallpapers
-public/js/wm.js              window manager: create/drag/resize/snap/minimise/z-order
-public/js/taskbar.js         task buttons, previews, tray flyouts, clock
-public/js/startmenu.js       Start menu + live tiles
-public/js/search.js          search panel
-public/js/actioncenter.js    notifications + quick actions
-public/js/calendarflyout.js  taskbar calendar
-public/js/contextmenu.js     nested context menus
-public/js/notify.js          toast notifications
-public/js/desktop.js         desktop icons, selection, drag, context menu
-public/js/fileopen.js        default-app file opening
-public/js/filedialog.js      open/save dialogs
-public/js/apps/*.js          the seventeen apps + registry
+public/theme/base.css          lock screen, desktop, wallpaper, common widgets
+public/theme/shell.css         taskbar, start menu, search, action center, calendar, window chrome
+public/theme/apps.css          per-app styles
+public/app/main.js            bootstrap, global hotkeys, debug hook (window.__WIN10)
+public/app/boot.js            boot → lock → sign-in sequence
+public/app/store.js           persisted state, file system API, settings, wallpapers
+public/app/wm.js              window manager: create/drag/resize/snap/minimise/z-order
+public/app/taskbar.js         task buttons, previews, tray flyouts, clock
+public/app/startmenu.js       Start menu + live tiles
+public/app/search.js          search panel
+public/app/actioncenter.js    notifications + quick actions
+public/app/calendarflyout.js  taskbar calendar
+public/app/contextmenu.js     nested context menus
+public/app/notify.js          toast notifications
+public/app/desktop.js         desktop icons, selection, drag, context menu
+public/app/fileopen.js        default-app file opening
+public/app/filedialog.js      open/save dialogs
+public/app/apps/*.js          the seventeen apps + registry
 public/assets/*.svg          wallpapers
 vercel.json                  static deployment config (output: public/)
 ```
@@ -137,6 +137,15 @@ vercel.json                  static deployment config (output: public/)
 The site is plain static files in `public/`, so `vercel.json` just points Vercel at that folder
 (`"outputDirectory": "public"`) — no install, no build, nothing to compile. Pushing to a linked
 branch and redeploying publishes the same files you run locally.
+
+## Touch & small screens
+
+The desktop is usable on a phone or tablet: windows open full-screen below 760px, taps open desktop
+icons and file rows (no double-click), a long press opens the context menu, the Start menu becomes a
+full-height sheet with the live tiles docked at the bottom, flyouts go full width, inputs are 16px so
+iOS does not zoom, and every app has a compact layout. Asset URLs are versioned by directory
+(`theme/`, `app/`) and served with `must-revalidate`, so a deploy never leaves a browser running a
+half-cached build.
 
 ## Notes
 
