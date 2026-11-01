@@ -10,12 +10,12 @@ import { notify } from '../notify.js';
 export const meta = { id: 'media', name: 'Groove Music', icon: 'media' };
 
 const TRACKS = [
-  { title: 'Spooky Orb (Main Theme)', artist: 'Dreadful Systems', length: 214 },
-  { title: 'Taskbar Dreams', artist: 'The Pinned Five', length: 187 },
-  { title: 'Ctrl + Shift + Esc', artist: 'Blue Screen Choir', length: 245 },
-  { title: 'Aero Snap', artist: 'Dreadful Systems', length: 168 },
-  { title: 'Night Light', artist: 'Amber Hours', length: 232 },
-  { title: 'Recycle Bin Waltz', artist: 'The Restored', length: 199 },
+  { title: 'Spooky Orb (Main Theme)', artist: 'Dreadful Systems', album: 'Orb', length: 214, art: ['#3b1e7a', '#7b47ff'] },
+  { title: 'Taskbar Dreams', artist: 'The Pinned Five', album: 'Shell', length: 187, art: ['#0a3d62', '#1e90ff'] },
+  { title: 'Ctrl + Shift + Esc', artist: 'Blue Screen Choir', album: 'Fatal', length: 245, art: ['#0b1b7a', '#2b6cff'] },
+  { title: 'Aero Snap', artist: 'Dreadful Systems', album: 'Orb', length: 168, art: ['#0d5c4a', '#12f7d6'] },
+  { title: 'Night Light', artist: 'Amber Hours', album: 'Amber', length: 232, art: ['#5b2a06', '#ff9e64'] },
+  { title: 'Recycle Bin Waltz', artist: 'The Restored', album: 'Deleted', length: 199, art: ['#2b2b31', '#8b98a6'] },
 ];
 
 const mmss = (s) => `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, '0')}`;
@@ -29,6 +29,9 @@ export function launch() {
   let idx = 0;
   let playing = false;
   let pos = 0;
+  let shuffle = false;
+  let repeat = false;
+  let muted = false;
   let vizTimer = null;
   let playTimer = null;
 
@@ -53,9 +56,15 @@ export function launch() {
         <span id="mu-len">0:00</span>
       </div>
       <div class="music-controls">
+        <button id="mu-shuffle" title="Shuffle" style="opacity:.6">${icon('sort')}</button>
         <button id="mu-prev" title="Previous">${icon('prev')}</button>
         <button class="play" id="mu-play" title="Play">${icon('play')}</button>
         <button id="mu-next" title="Next">${icon('next')}</button>
+        <button id="mu-repeat" title="Repeat" style="opacity:.6">${icon('refresh')}</button>
+        <button id="mu-vol" title="Mute" style="margin-left:auto;opacity:.7">${icon('volume')}</button>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;font-size:11px;opacity:.6;margin-top:2px">
+        <span id="mu-count"></span><span style="margin-left:auto" id="mu-mode"></span>
       </div>
       <div class="music-list" id="mu-list"></div>
     </div>`;
@@ -67,12 +76,27 @@ export function launch() {
   function renderTrack() {
     const t = TRACKS[idx];
     win.body.querySelector('#mu-title').textContent = t.title;
-    win.body.querySelector('#mu-artist').textContent = t.artist;
+    win.body.querySelector('#mu-artist').textContent = `${t.artist} · ${t.album}`;
     win.body.querySelector('#mu-len').textContent = mmss(t.length);
+    win.body.querySelector('#mu-count').textContent = `${idx + 1} of ${TRACKS.length} · ${TRACKS.reduce((a, b) => a + b.length, 0) / 60 | 0} min total`;
+    win.body.querySelector('#mu-mode').textContent = [shuffle ? 'shuffle on' : '', repeat ? 'repeat on' : ''].filter(Boolean).join(' · ') || 'in order';
+    win.body.querySelector('#mu-shuffle').style.opacity = shuffle ? 1 : 0.6;
+    win.body.querySelector('#mu-repeat').style.opacity = repeat ? 1 : 0.6;
+    win.body.querySelector('#mu-vol').style.opacity = muted ? 0.35 : 0.7;
+    const art = win.body.querySelector('.music-art');
+    if (art) {
+      art.style.background = `linear-gradient(135deg, ${t.art[0]}, ${t.art[1]})`;
+      art.innerHTML = `<span style="width:46%;height:46%;display:flex;opacity:.9">${icon('media')}</span>`;
+      art.style.display = 'grid';
+      art.style.placeItems = 'center';
+    }
     win.setTitle(`${t.title} — Groove Music`);
     win.body.querySelector('#mu-list').innerHTML = TRACKS.map((tr, i) => `
       <div class="row${i === idx ? ' active' : ''}" data-track="${i}">
-        <span>${i === idx && playing ? '▶ ' : ''}${esc(tr.title)}<span style="opacity:.5"> · ${esc(tr.artist)}</span></span>
+        <span style="display:flex;align-items:center;gap:8px;min-width:0">
+          <span style="width:20px;height:20px;flex:0 0 20px;border-radius:2px;background:linear-gradient(135deg,${tr.art[0]},${tr.art[1]})"></span>
+          <span style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${i === idx && playing ? '▶ ' : ''}${esc(tr.title)}<span style="opacity:.5"> · ${esc(tr.artist)}</span></span>
+        </span>
         <span style="opacity:.5">${mmss(tr.length)}</span>
       </div>`).join('');
     win.body.querySelectorAll('[data-track]').forEach((r) => r.addEventListener('click', () => {
@@ -101,7 +125,7 @@ export function launch() {
     clearInterval(playTimer);
     playTimer = setInterval(() => {
       pos += 0.25;
-      if (pos >= TRACKS[idx].length) { next(); return; }
+      if (pos >= TRACKS[idx].length) { pos = 0; if (!repeat) next(); else { updateProgress(); } return; }
       updateProgress();
     }, 250);
     renderTrack();
@@ -115,6 +139,13 @@ export function launch() {
   }
 
   function next() {
+    if (shuffle) {
+      let n = idx;
+      while (n === idx && TRACKS.length > 1) n = Math.floor(Math.random() * TRACKS.length);
+      idx = n; pos = 0;
+      renderTrack(); updateProgress();
+      return;
+    }
     idx = (idx + 1) % TRACKS.length;
     pos = 0;
     if (playing) { renderTrack(); } else renderTrack();
@@ -124,6 +155,21 @@ export function launch() {
   win.body.querySelector('#mu-play').addEventListener('click', () => { playing ? pause() : play(); });
   win.body.querySelector('#mu-next').addEventListener('click', () => next());
   win.body.querySelector('#mu-prev').addEventListener('click', () => { idx = (idx - 1 + TRACKS.length) % TRACKS.length; pos = 0; renderTrack(); updateProgress(); });
+  win.body.querySelector('#mu-shuffle').addEventListener('click', () => {
+    shuffle = !shuffle;
+    notify({ title: 'Groove Music', body: shuffle ? 'Shuffle is on.' : 'Shuffle is off.', icon: 'media', timeout: 2200 });
+    renderTrack();
+  });
+  win.body.querySelector('#mu-repeat').addEventListener('click', () => {
+    repeat = !repeat;
+    notify({ title: 'Groove Music', body: repeat ? 'Repeat is on.' : 'Repeat is off.', icon: 'media', timeout: 2200 });
+    renderTrack();
+  });
+  win.body.querySelector('#mu-vol').addEventListener('click', () => {
+    muted = !muted;
+    notify({ title: 'Groove Music', body: muted ? 'Muted. The silence is intentional.' : 'Unmuted.', icon: 'volume', timeout: 2200 });
+    renderTrack();
+  });
 
   vizTimer = setInterval(animateViz, 110);
   win.onBeforeClose = () => { clearInterval(vizTimer); clearInterval(playTimer); return true; };

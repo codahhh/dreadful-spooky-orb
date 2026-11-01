@@ -258,8 +258,8 @@ body.dark .win-titlebar{border-bottom-color:rgba(255,255,255,.07)}
 .win-title .w-ico{width:16px;height:16px;flex:0 0 16px}
 .win-title .w-ico svg{width:16px;height:16px}
 .win-title .w-text{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;opacity:.92}
-.win-controls{display:flex;height:100%;flex:0 0 auto}
-.win-btn{width:46px;height:100%;display:grid;place-items:center;color:var(--title-fg);opacity:.85;transition:background .1s}
+.win-controls{display:flex;height:100%;flex:0 0 auto;position:relative;z-index:3;pointer-events:auto}
+.win-btn{width:46px;height:100%;display:grid;place-items:center;color:var(--title-fg);opacity:.85;transition:background .1s;cursor:default;pointer-events:auto;background:transparent;border:0;padding:0;-webkit-appearance:none;appearance:none}
 .win-btn:hover{background:var(--hover);opacity:1}
 .win-btn:active{background:var(--press)}
 .win-btn.close:hover{background:#e81123;color:#fff}

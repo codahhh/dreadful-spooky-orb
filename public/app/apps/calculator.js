@@ -19,7 +19,7 @@ const fmt = (n) => {
 export function launch() {
   const win = createWindow({
     title: 'Calculator', icon: 'calculator', width: 356, height: 556,
-    minWidth: 300, minHeight: 440, appId: 'calculator', maximizable: false,
+    minWidth: 300, minHeight: 440, appId: 'calculator',
   });
 
   let cur = '0';

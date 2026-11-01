@@ -194,6 +194,8 @@ window.addEventListener('pointerdown', (e) => {
   if (e.pointerType === 'mouse') return;
   const target = e.target instanceof Element ? e.target : null;
   if (!target) return;
+  // never long-press the window buttons: a slow tap must still minimise/close
+  if (target.closest('.win-controls')) return;
   lpFired = false;
   lpOrigin = { x: e.clientX, y: e.clientY };
   cancelLongPress();

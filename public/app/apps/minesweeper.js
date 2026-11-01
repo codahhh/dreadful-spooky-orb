@@ -17,7 +17,7 @@ const DIFFS = {
 export function launch() {
   const win = createWindow({
     title: 'Minesweeper', icon: 'mine', width: 420, height: 500,
-    minWidth: 320, minHeight: 380, appId: 'minesweeper', maximizable: false,
+    minWidth: 320, minHeight: 380, appId: 'minesweeper',
   });
 
   let diff = 'beginner';

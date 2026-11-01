@@ -47,6 +47,31 @@ export function launch() {
           ['Win + Arrow', 'Snap window'], ['Ctrl+Shift+Esc', 'Task Manager'], ['F2 / Delete', 'Rename / delete in Explorer'],
         ].map(([k, v]) => `<div style="display:flex;justify-content:space-between;gap:10px;padding:3px 0;border-bottom:1px dotted var(--line)"><span class="kbd">${k}</span><span style="color:var(--muted)">${v}</span></div>`).join('')}
       </div>
+      <h2 style="font-size:15px;font-weight:600;margin:26px 0 8px">What's new in this build</h2>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:8px 18px;font-size:12px;max-width:820px">
+        ${[
+          ['Window buttons', 'Close, minimise and maximise now work on touch screens — including a slow tap.'],
+          ['Weather', 'Seven cities, a twelve-hour strip, °C or °F, sunrise and air quality.'],
+          ['Mail', 'Folders, search, flagging, archiving and a composer that really sends.'],
+          ['Store', 'Sixteen apps with detail pages, ratings and screenshots.'],
+          ['Files', 'A much fuller disk: music, videos, wallpapers, projects and a changelog.'],
+          ['Music', 'Album art, shuffle, repeat and a volume that mutes politely.'],
+        ].map(([t, d]) => `<div style="padding:6px 0;border-bottom:1px dotted var(--line)"><b>${t}</b><div style="color:var(--muted);margin-top:2px">${d}</div></div>`).join('')}
+      </div>
+
+      <h2 style="font-size:15px;font-weight:600;margin:26px 0 8px">Everything installed on this PC</h2>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(132px,1fr));gap:8px;max-width:820px">
+        ${[
+          ['explorer', 'File Explorer'], ['edge', 'Microsoft Edge'], ['notepad', 'Notepad'],
+          ['paint', 'Paint'], ['calculator', 'Calculator'], ['settings', 'Settings'],
+          ['terminal', 'Terminal'], ['taskmanager', 'Task Manager'], ['photos', 'Photos'],
+          ['media', 'Groove Music'], ['mail', 'Mail'], ['calendar', 'Calendar'],
+          ['weather', 'Weather'], ['store', 'Microsoft Store'], ['minesweeper', 'Minesweeper'],
+          ['recycle', 'Recycle Bin'],
+        ].map(([id, name]) => `<button class="btn" data-open="${id}" style="display:flex;align-items:center;gap:8px;height:34px;padding:0 8px;font-size:11.5px;justify-content:flex-start">
+          <span style="width:18px;height:18px;display:inline-flex;flex:0 0 18px">${icon(id === 'recycle' ? 'recycle' : id === 'minesweeper' ? 'mine' : id === 'taskmanager' ? 'taskmgr' : id)}</span>${name}</button>`).join('')}
+      </div>
+
       <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:24px">
         <button class="btn primary" data-open="explorer">Open File Explorer</button>
         <button class="btn" data-open="terminal">Open PowerShell</button>
@@ -55,6 +80,9 @@ export function launch() {
       </div>
       <div style="margin-top:22px;font-size:11px;color:var(--muted);max-width:640px;border-top:1px solid var(--line);padding-top:12px">
         Tip: press <span class="kbd">Win</span> (or <span class="kbd">Ctrl</span>+<span class="kbd">Esc</span>) to open Start. Yes, the Start menu has live tiles, an app list and a working power menu.
+      </div>
+      <div style="margin-top:14px;font-size:10.5px;color:var(--muted);max-width:640px">
+        ${esc(navigator.userAgent.includes('Mobile') ? 'Phone / tablet layout active — windows open full-screen and long-press opens context menus.' : 'Desktop layout active — double-click title bars, drag windows to the edges to snap.')}
       </div>
     </div>`;
   win.body.querySelectorAll('[data-open]').forEach((b) => b.addEventListener('click', () => openApp(b.dataset.open)));

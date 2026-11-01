@@ -26,6 +26,7 @@ Click or press Enter on the lock screen, then **Sign in** (any password).
 | Area | What works |
 | --- | --- |
 | **Boot & lock** | Windows-style boot with spinner, lock screen with clock/date, click-to-reveal sign-in, blurred backdrop, fade-out transition, lock (`Win+L`), sign out, sleep |
+| **Window buttons** | Close / minimise / maximise are handled by one delegated, pointer-event based handler, so they work with a mouse, a finger, a slow tap, a stylus or the keyboard. Every window has all three. |
 | **Desktop** | Double-click icons to open, drag icons anywhere (positions persist), marquee-free single selection, rename icons, delete to Recycle Bin, right-click desktop menu (view, sort, refresh, new folder/text file, personalise, display settings) |
 | **Taskbar** | Pinned + running apps, active indicator, hover thumbnails, click to minimise/restore, right-click for window list + pin/unpin + close all, tray flyouts (network, volume, battery, hidden icons, language), clock with calendar, notification badge, **Show desktop** strip (click to minimise all, double-click to restore all) |
 | **Start menu** | Live tiles (small/medium/wide, reorderable, unpinnable), all-apps list with search box, user avatar, Documents/Pictures shortcuts, settings, power menu, right-click any app for *Pin to Start / Pin to taskbar / Open* |

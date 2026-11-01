@@ -223,7 +223,15 @@ export function launch(args = {}) {
     return false;
   };
 
-  if (filePath) load(filePath); else { setDirty(false); setTimeout(() => ta.focus(), 60); }
+  if (filePath) {
+    load(filePath);
+  } else {
+    // open with something to read rather than a blank page
+    const sample = 'C:\\Users\\Alex\\Documents\\Welcome.txt';
+    if (getNode(sample)?.type === 'file') load(sample);
+    else setDirty(false);
+    setTimeout(() => ta.focus(), 60);
+  }
 
   return win;
 }

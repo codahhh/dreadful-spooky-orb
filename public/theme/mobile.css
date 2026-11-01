@@ -48,7 +48,10 @@ button,
 .tray-btn {
   min-height: 34px;
 }
-.win-titlebar { touch-action: none; }
+.win-titlebar { touch-action: manipulation; }   /* never on the buttons below */
+.win-title { touch-action: none; }                /* drag surface */
+.win-controls { touch-action: manipulation; }
+.win-btn { touch-action: manipulation; -webkit-user-select: none; user-select: none; }
 
 /* pressing feedback for touch (no hover on phones) */
 @media (hover: none) {
@@ -168,8 +171,9 @@ button,
 
   /* ---------- windows ---------- */
   .win { min-width: 0; }
-  .win-titlebar { height: 36px; flex-basis: 36px; }
-  .win-btn { width: 42px; }
+  .win-titlebar { height: 40px; flex-basis: 40px; }
+  .win-btn { width: 46px; }
+  .win-btn svg { width: 12px; height: 12px; }
   .win-body { overflow: auto; -webkit-overflow-scrolling: touch; }
   .resize-handle { display: none; }
 

@@ -48,6 +48,62 @@ function bringToFront(win) {
 
 function emit() { bus.emit('win:changed'); }
 
+function isElement(t) { return t instanceof Element ? t : null; }
+
+/* ------------------------------------------------------------
+   Window buttons are handled once, at document level, on both
+   pointerup and click. Some touch browsers never synthesise a
+   click on chrome that sits under touch-action:none, and older
+   WebKit reports the <svg> as the target — this makes the three
+   buttons work regardless of what the browser decides to send.
+   ------------------------------------------------------------ */
+let controlsBound = false;
+let pendingClick = false;   // a pointerup already ran this gesture's action
+
+function runControl(win, kind) {
+  if (kind === 'min') win.minimize();
+  else if (kind === 'max') toggleMaximize(win);
+  else if (kind === 'close') win.close();
+}
+
+function bindControls() {
+  if (controlsBound) return;
+  controlsBound = true;
+
+  const find = (e) => {
+    const t = isElement(e.target);
+    const btn = t && t.closest('.win-btn');
+    if (!btn) return null;
+    const win = wins.find((w) => w.el === btn.closest('.win'));
+    return win && !win.closed ? { btn, win } : null;
+  };
+
+  const act = (e) => {
+    const hit = find(e);
+    if (!hit) return;
+    e.preventDefault();
+    e.stopPropagation();
+    const { btn, win } = hit;
+    runControl(win, btn.classList.contains('close') ? 'close'
+      : btn.classList.contains('max') ? 'max' : 'min');
+  };
+
+  // a new gesture clears the "already handled" flag
+  document.addEventListener('pointerdown', (e) => { if (find(e)) pendingClick = false; }, true);
+
+  document.addEventListener('pointerup', (e) => {
+    if (!find(e)) return;
+    pendingClick = true;
+    act(e);
+  }, true);
+
+  document.addEventListener('click', (e) => {
+    if (pendingClick) { pendingClick = false; e.preventDefault(); e.stopPropagation(); return; }
+    act(e);   // keyboard activation, or a browser that never sent pointerup
+  }, true);
+  // keyboard: Enter / Space on a focused button still produce a click (handled above)
+}
+
 export function createWindow(opts = {}) {
   const {
     title = 'Window', icon: ic = 'file', width = 900, height = 600,
@@ -76,9 +132,9 @@ export function createWindow(opts = {}) {
     <div class="win-titlebar">
       <div class="win-title"><span class="w-ico">${icon(ic)}</span><span class="w-text">${esc(title)}</span></div>
       <div class="win-controls">
-        ${minimizable ? `<button class="win-btn min" title="Minimize"><svg viewBox="0 0 10 10"><path d="M0 5h10" stroke="currentColor" stroke-width="1"/></svg></button>` : ''}
-        ${maximizable ? `<button class="win-btn max" title="Maximize"><svg viewBox="0 0 10 10" class="i-max"><rect x=".5" y=".5" width="9" height="9" fill="none" stroke="currentColor"/></svg><svg viewBox="0 0 10 10" class="i-restore" style="display:none"><rect x=".5" y="2.5" width="7" height="7" fill="none" stroke="currentColor"/><path d="M2.5 2.5V.5h7v7h-2" fill="none" stroke="currentColor"/></svg></button>` : ''}
-        <button class="win-btn close" title="Close"><svg viewBox="0 0 10 10"><path d="M0 0l10 10M10 0L0 10" stroke="currentColor" stroke-width="1"/></svg></button>
+        <button type="button" class="win-btn min" title="Minimize" aria-label="Minimize"><svg viewBox="0 0 10 10" aria-hidden="true"><path d="M0 5h10" stroke="currentColor" stroke-width="1"/></svg></button>
+        <button type="button" class="win-btn max" title="Maximize" aria-label="Maximize"><svg viewBox="0 0 10 10" class="i-max" aria-hidden="true"><rect x=".5" y=".5" width="9" height="9" fill="none" stroke="currentColor"/></svg><svg viewBox="0 0 10 10" class="i-restore" style="display:none" aria-hidden="true"><rect x=".5" y="2.5" width="7" height="7" fill="none" stroke="currentColor"/><path d="M2.5 2.5V.5h7v7h-2" fill="none" stroke="currentColor"/></svg></button>
+        <button type="button" class="win-btn close" title="Close" aria-label="Close"><svg viewBox="0 0 10 10" aria-hidden="true"><path d="M0 0l10 10M10 0L0 10" stroke="currentColor" stroke-width="1"/></svg></button>
       </div>
     </div>
     <div class="win-body ${bodyClass}"></div>
@@ -107,7 +163,7 @@ export function createWindow(opts = {}) {
     setIcon(name) { this.iconEl.innerHTML = icon(name); this.icon = name; emit(); },
     setRect: (x2, y2, w2, h2) => setRect(win, x2, y2, w2, h2),
     minimize() {
-      if (this.minimized || !minimizable) return;
+      if (this.minimized) return;
       this.minimized = true;
       this.el.classList.add('minimizing');
       setTimeout(() => {
@@ -135,20 +191,20 @@ export function createWindow(opts = {}) {
   if (typeof window !== 'undefined' && window.innerWidth <= 760) setTimeout(() => { if (!win.closed) maximize(win); }, 0);
 
   // ---------- controls ----------
-  el.querySelector('.min')?.addEventListener('click', (e) => { e.stopPropagation(); win.minimize(); });
-  el.querySelector('.max')?.addEventListener('click', (e) => { e.stopPropagation(); toggleMaximize(win); });
-  el.querySelector('.close')?.addEventListener('click', (e) => { e.stopPropagation(); win.close(); });
+  bindControls();
 
   win.titlebar.addEventListener('dblclick', (e) => {
-    if (e.target.closest('.win-btn')) return;
-    if (maximizable) toggleMaximize(win);
+    if (isElement(e.target)?.closest('.win-controls')) return;
+    toggleMaximize(win);
   });
 
   // ---------- drag ----------
-  win.titlebar.addEventListener('pointerdown', (e) => {
-    if (e.button !== 0 || e.target.closest('.win-btn')) return;
+  const dragStart = (e) => {
+    if (e.button !== 0) return;
+    if (isElement(e.target)?.closest('.win-controls')) return;
     startDrag(win, e);
-  });
+  };
+  win.titlebar.addEventListener('pointerdown', dragStart);
 
   // ---------- resize ----------
   el.querySelectorAll('.resize-handle').forEach((h) => {

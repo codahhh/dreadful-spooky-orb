@@ -150,6 +150,8 @@ export function fileKind(name = '') {
   const ext = name.split('.').pop().toLowerCase();
   if (['txt', 'md', 'log', 'ini', 'json', 'csv', 'cfg', 'bat', 'ps1', 'js', 'css', 'html'].includes(ext)) return 'text';
   if (['png', 'jpg', 'jpeg', 'gif', 'webp', 'bmp', 'svg'].includes(ext)) return 'image';
+  if (['mp3', 'wav', 'flac', 'm4a', 'ogg'].includes(ext)) return 'audio';
+  if (['mp4', 'mkv', 'mov', 'webm', 'avi'].includes(ext)) return 'video';
   return 'other';
 }
 
@@ -160,6 +162,9 @@ export function fileIconName(name) {
   if (['png', 'jpg', 'jpeg', 'gif', 'webp', 'bmp'].includes(ext)) return 'image';
   if (['zip', 'rar', '7z'].includes(ext)) return 'zip';
   if (['exe', 'msi'].includes(ext)) return 'windows';
+  if (['mp3', 'wav', 'flac', 'm4a', 'ogg'].includes(ext)) return 'media';
+  if (['mp4', 'mkv', 'mov', 'webm', 'avi'].includes(ext)) return 'videos';
+  if (['csv', 'json', 'log'].includes(ext)) return 'documents';
   if (ext === 'pdf') return 'doc';
   if (['doc', 'docx', 'rtf'].includes(ext)) return 'doc';
   return 'file';

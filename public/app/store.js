@@ -23,6 +23,23 @@ function svgPic(a, b, c, motif) {
       <circle cx="350" cy="270" r="205" fill="none" stroke="${c}" stroke-width="1.4" opacity=".5"/>
       <circle cx="120" cy="120" r="4" fill="#fff" opacity=".8"/><circle cx="590" cy="380" r="3" fill="#fff" opacity=".7"/>
       <circle cx="470" cy="110" r="2" fill="#fff" opacity=".6"/><circle cx="210" cy="420" r="2.4" fill="#fff" opacity=".7"/>`,
+    city: `<g fill="${b}" opacity=".9">
+        <rect x="60" y="250" width="70" height="270"/><rect x="145" y="180" width="54" height="340"/>
+        <rect x="212" y="300" width="86" height="220"/><rect x="312" y="140" width="62" height="380"/>
+        <rect x="388" y="250" width="78" height="270"/><rect x="480" y="210" width="60" height="310"/>
+        <rect x="552" y="290" width="96" height="230"/></g>
+      <g fill="#ffe9a8" opacity=".85">${Array.from({length: 46}, (_, i) => { const x = 72 + (i % 12) * 52 + (i % 3) * 6; const y = 200 + Math.floor(i / 12) * 58; return `<rect x="${x}" y="${y}" width="7" height="9"/>`; }).join('')}</g>
+      <circle cx="600" cy="90" r="42" fill="#fff" opacity=".8"/>`,
+    forest: `<rect y="360" width="700" height="160" fill="${c}" opacity=".7"/>
+      <g fill="${b}">${Array.from({length: 9}, (_, i) => { const x = 40 + i * 80, h = 180 + (i % 3) * 60; return `<path d="M${x} 380 L${x + 44} ${380 - h} L${x + 88} 380 Z"/>`; }).join('')}</g>
+      <path d="M0 400 Q350 320 700 400 L700 520 L0 520 Z" fill="#0f1a14" opacity=".55"/>`,
+    desert: `<circle cx="520" cy="180" r="82" fill="#ffd08a" opacity=".95"/>
+      <path d="M0 420 Q180 300 380 400 Q530 470 700 360 L700 520 L0 520 Z" fill="${b}"/>
+      <path d="M0 470 Q200 380 420 470 Q560 520 700 450 L700 520 L0 520 Z" fill="${c}" opacity=".75"/>`,
+    night: `<circle cx="560" cy="120" r="58" fill="#f2f6ff" opacity=".9"/>
+      <circle cx="536" cy="104" r="52" fill="${a}" opacity=".9"/>
+      <g fill="#fff">${Array.from({length: 60}, (_, i) => { const x = (i * 137) % 690 + 5, y = (i * 91) % 470 + 12, r = (i % 4) * 0.6 + 0.8; return `<circle cx="${x}" cy="${y}" r="${r}" opacity="${0.35 + (i % 5) * 0.12}"/>`; }).join('')}</g>
+      <path d="M0 430 L150 350 L300 420 L470 330 L700 430 L700 520 L0 520 Z" fill="${b}"/>`,
     peaks: `<path d="M0 420 L170 120 L300 300 L400 200 L470 300 L560 140 L700 420 Z" fill="${b}"/>
       <path d="M170 120 L210 190 L130 190 Z" fill="#fff" opacity=".9"/>
       <path d="M560 140 L600 205 L520 205 Z" fill="#fff" opacity=".85"/>
@@ -38,10 +55,23 @@ function svgPic(a, b, c, motif) {
 }
 
 const SAMPLE_PICS = [
-  { name: 'Sample - Sunset.jpg', src: svgPic('#2b1055', '#7f5af0', '#ff9e64', 'hills') },
-  { name: 'Sample - Waves.jpg', src: svgPic('#031b2e', '#2e9fd6', '#04141f', 'waves') },
-  { name: 'Sample - Orb.jpg', src: svgPic('#08061a', '#7b47ff', '#12f7d6', 'orb') },
-  { name: 'Sample - Peaks.jpg', src: svgPic('#1d2b4b', '#5f7fb5', '#ffd0a1', 'peaks') },
+  { name: 'Sample - Sunset.jpg', src: svgPic('#2b1055', '#7f5af0', '#ff9e64', 'hills'), album: 'Wallpapers' },
+  { name: 'Sample - Waves.jpg', src: svgPic('#031b2e', '#2e9fd6', '#04141f', 'waves'), album: 'Ocean' },
+  { name: 'Sample - Orb.jpg', src: svgPic('#08061a', '#7b47ff', '#12f7d6', 'orb'), album: 'Wallpapers' },
+  { name: 'Sample - Peaks.jpg', src: svgPic('#1d2b4b', '#5f7fb5', '#ffd0a1', 'peaks'), album: 'Mountains' },
+  { name: 'Sample - Skyline.jpg', src: svgPic('#101b2e', '#2b3d5c', '#0a1220', 'city'), album: 'City' },
+  { name: 'Sample - Forest.jpg', src: svgPic('#0d1f18', '#1f6b4a', '#0a1612', 'forest'), album: 'Nature' },
+  { name: 'Sample - Desert.jpg', src: svgPic('#3a1d10', '#e08a4b', '#7a3f1d', 'desert'), album: 'Nature' },
+  { name: 'Sample - Night.jpg', src: svgPic('#050a18', '#12203d', '#02040a', 'night'), album: 'City' },
+];
+
+const SAMPLE_MUSIC = [
+  { name: '01 Spooky Orb (Main Theme).mp3', size: 8_412_331, album: 'Dreadful Systems' },
+  { name: '02 Taskbar Dreams.mp3', size: 6_998_204, album: 'The Pinned Five' },
+  { name: '03 Ctrl + Shift + Esc.mp3', size: 9_120_884, album: 'Blue Screen Choir' },
+  { name: '04 Aero Snap.mp3', size: 5_884_112, album: 'Dreadful Systems' },
+  { name: '05 Night Light.mp3', size: 8_221_770, album: 'Amber Hours' },
+  { name: '06 Recycle Bin Waltz.mp3', size: 7_100_455, album: 'The Restored' },
 ];
 
 /* ------------------------------ file system seed ------------------------------ */
@@ -60,15 +90,48 @@ function seedFs() {
     d('Projects', [
       f('ideas.txt', `Project ideas\r\n--------------\r\n1. Port Solitaire\r\n2. Add a real terminal with a shell parser\r\n3. Make the taskbar auto-hide\r\n4. Ship it`),
       f('notes.md', `# Notes\n\n- Windows 10 shell, rebuilt from scratch\n- Window manager supports snapping\n- Everything persists between reloads`),
+      f('roadmap.md', `# Roadmap\n\n## 2026 Q1\n- [x] Window manager with snap layouts\n- [x] Virtual file system\n- [x] Touch support\n\n## Q2\n- [ ] Multi-desktop\n- [ ] Real audio engine\n- [ ] Themes marketplace\n- [ ] Something with the orb (again)`),
+      f('poem.txt', `The orb hangs low above the taskbar,\r\nA patient light, a purple star,\r\nIt watches while the windows stack,\r\nAnd hums the fans I do not have.`),
+      f('recipe.md', `# Late-night noodles\n\n- 1 pack noodles\n- 2 tbsp soy sauce\n- 1 egg\n- chilli, to taste\n\nBoil. Drain. Fry. Eat at the keyboard. Wipe the keys afterwards.`),
+      f('budget.csv', 'month,income,spend\r\nJanuary,2400,1980\r\nFebruary,2400,2104\r\nMarch,2600,1875'),
+      f('changelog.txt', `19045.3803\r\n- Window controls rewritten for touch\r\n- Weather now has hourly detail\r\n- Store catalogue expanded\r\n- Photos gained albums`),
     ]),
   ]);
   const pics = d('Pictures', [
-    ...SAMPLE_PICS.map((p) => f(p.name, p.src, 'image', now - 86400000)),
-    d('Screenshots', []),
+    ...SAMPLE_PICS.map((p, i) => f(p.name, p.src, 'image', now - 86400000 - i * 3600000)),
+    d('Screenshots', [
+      f('Screenshot (1).png', SAMPLE_PICS[4].src, 'image', now - 5400000),
+      f('Screenshot (2).png', SAMPLE_PICS[7].src, 'image', now - 3600000),
+    ]),
+    d('Wallpapers', [
+      f('orb-dark.png', SAMPLE_PICS[2].src, 'image', now - 7200000),
+      f('sunset-wide.png', SAMPLE_PICS[0].src, 'image', now - 7000000),
+    ]),
+    d('Saved pictures', [f('skyline.png', SAMPLE_PICS[4].src, 'image', now - 43200000)]),
+  ]);
+  const music = d('Music', [
+    ...SAMPLE_MUSIC.map((t, i) => f(t.name, `audio:${t.album}`, 'audio', now - i * 86400000)),
+    d('Dreadful Systems', [
+      f('01 Spooky Orb (Main Theme).mp3', 'audio:Dreadful Systems', 'audio', now - 86400000),
+      f('04 Aero Snap.mp3', 'audio:Dreadful Systems', 'audio', now - 86400000),
+    ]),
+    f('playlist.m3u', '#EXTM3U\r\n01 Spooky Orb (Main Theme).mp3\r\n02 Taskbar Dreams.mp3\r\n03 Ctrl + Shift + Esc.mp3\r\n04 Aero Snap.mp3\r\n05 Night Light.mp3\r\n06 Recycle Bin Waltz.mp3'),
+  ]);
+  const videos = d('Videos', [
+    d('Captures', [f('clip-0001.mp4', 'video:1280x720', 'video', now - 86400000)]),
+    f('orb-timelapse.mp4', 'video:1920x1080', 'video', now - 172800000),
+    f('minesweeper-run.mp4', 'video:1280x720', 'video', now - 259200000),
+  ]);
+  const desktopFiles = d('Desktop', [
+    f('todo.txt', `Today\r\n-----\r\n[x] Boot the PC\r\n[x] Open every app at once\r\n[ ] Reorganise the desktop icons\r\n[ ] Win at Minesweeper (expert)`),
+    f('shortcut-notes.md', '# Desktop notes\n\nRight-click the desktop to change wallpaper, sort icons or refresh.'),
   ]);
   const dl = d('Downloads', [
-    f('release-notes.txt', `Build 19045.3803\r\n\r\n* Taskbar search is faster\r\n* Fixed a bug where the Start menu would not open\r\n* Minesweeper now remembers your best time`),
+    f('release-notes.txt', `Build 19045.3803\r\n\r\n* Taskbar search is faster\r\n* Fixed a bug where the Start menu would not open\r\n* Minesweeper now remembers your best time\r\n* Window buttons work on touch screens`),
     f('invoice-2024.pdf', 'Not really a PDF. Nice try.', 'other'),
+    f('spec-sheet.csv', 'part,qty,price\r\nRaspberry Pi,2,45.00\r\nUSB-C hub,1,29.99\r\nOrb polish,1,9.99'),
+    f('orb-wallpaper.png', SAMPLE_PICS[2].src, 'image', now - 3600000),
+    f('installer-setup.exe', 'MZ... (binary)', 'other'),
   ]);
   return {
     name: 'This PC', type: 'folder', children: [
@@ -77,7 +140,7 @@ function seedFs() {
           d('Alex', [
             { ...docs, modified: now },
             { ...pics, modified: now },
-            d('Desktop'), dl, d('Music', [f('readme.txt', 'Drop some music here.')]), d('Videos', []),
+            desktopFiles, dl, music, videos,
             d('AppData', [d('Local', [d('Temp', [])])]),
           ]),
         ]),
@@ -143,8 +206,11 @@ const defaultDesktopIcons = () => [
 ];
 
 /* ------------------------------ state ------------------------------ */
+const SEED_VERSION = 2;   // bumped whenever the sample content changes
+
 function fresh() {
   return {
+    seed: SEED_VERSION,
     settings: defaultSettings(),
     fs: seedFs(),
     recycle: [],
@@ -161,7 +227,11 @@ try {
   if (raw) {
     const saved = JSON.parse(raw);
     state = { ...fresh(), ...saved, settings: { ...defaultSettings(), ...(saved.settings || {}) } };
-    if (!state.fs) state.fs = seedFs();
+    // content upgrade: keep the user's settings, refresh the sample files
+    if (!state.fs || (saved.seed || 1) < SEED_VERSION) {
+      state.fs = seedFs();
+      state.seed = SEED_VERSION;
+    }
   }
 } catch (e) { console.warn('state load failed', e); }
 
