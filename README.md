@@ -10,8 +10,8 @@ dark/light theme with accent colours, and seventeen working apps sharing one in-
 that survives a reload.
 
 ```bash
-# any static server works
-python3 -m http.server 8080
+# any static server works — the site is the `public/` folder
+python3 -m http.server 8080 -d public
 # then open http://localhost:8080
 ```
 
@@ -96,26 +96,27 @@ Wipe everything from the console with `localStorage.clear()`.
 ## Project layout
 
 ```
-index.html            shell markup (lockscreen, desktop, taskbar, flyouts, panels)
-css/base.css          lock screen, desktop, wallpaper, common widgets
-css/shell.css         taskbar, start menu, search, action center, calendar, window chrome
-css/apps.css          per-app styles
-js/main.js            bootstrap, global hotkeys, debug hook (window.__WIN10)
-js/boot.js            boot → lock → sign-in sequence
-js/store.js           persisted state, file system API, settings, wallpapers
-js/wm.js              window manager: create/drag/resize/snap/minimise/z-order
-js/taskbar.js         task buttons, previews, tray flyouts, clock
-js/startmenu.js       Start menu + live tiles
-js/search.js          search panel
-js/actioncenter.js    notifications + quick actions
-js/calendarflyout.js  taskbar calendar
-js/contextmenu.js     nested context menus
-js/notify.js          toast notifications
-js/desktop.js         desktop icons, selection, drag, context menu
-js/fileopen.js        default-app file opening
-js/filedialog.js      open/save dialogs
-js/apps/*.js          the seventeen apps + registry
-assets/*.svg          wallpapers
+public/index.html            shell markup (lockscreen, desktop, taskbar, flyouts, panels)
+public/css/base.css          lock screen, desktop, wallpaper, common widgets
+public/css/shell.css         taskbar, start menu, search, action center, calendar, window chrome
+public/css/apps.css          per-app styles
+public/js/main.js            bootstrap, global hotkeys, debug hook (window.__WIN10)
+public/js/boot.js            boot → lock → sign-in sequence
+public/js/store.js           persisted state, file system API, settings, wallpapers
+public/js/wm.js              window manager: create/drag/resize/snap/minimise/z-order
+public/js/taskbar.js         task buttons, previews, tray flyouts, clock
+public/js/startmenu.js       Start menu + live tiles
+public/js/search.js          search panel
+public/js/actioncenter.js    notifications + quick actions
+public/js/calendarflyout.js  taskbar calendar
+public/js/contextmenu.js     nested context menus
+public/js/notify.js          toast notifications
+public/js/desktop.js         desktop icons, selection, drag, context menu
+public/js/fileopen.js        default-app file opening
+public/js/filedialog.js      open/save dialogs
+public/js/apps/*.js          the seventeen apps + registry
+public/assets/*.svg          wallpapers
+vercel.json                  static deployment config (output: public/)
 ```
 
 ## Verification
@@ -131,9 +132,9 @@ assets/*.svg          wallpapers
 
 ## Deploying
 
-The repo ships a `vercel.json` so the static site can be published as-is: no install step, the
-build command simply copies `index.html`, `css/`, `js/` and `assets/` into `dist/`, which Vercel
-serves. Any static host works the same way — there is nothing to compile.
+The site is plain static files in `public/`, so `vercel.json` just points Vercel at that folder
+(`"outputDirectory": "public"`) — no install, no build, nothing to compile. Pushing to a linked
+branch and redeploying publishes the same files you run locally.
 
 ## Notes
 
