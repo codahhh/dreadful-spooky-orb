@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" width="1600" height="900" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="sky2" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#01050c"/>
+      <stop offset="45%" stop-color="#04223d"/>
+      <stop offset="78%" stop-color="#06405f"/>
+      <stop offset="100%" stop-color="#0a628f"/>
+    </linearGradient>
+    <radialGradient id="floorGlow2" cx="50%" cy="100%" r="70%">
+      <stop offset="0" stop-color="#d8f8ff" stop-opacity=".9"/>
+      <stop offset="26%" stop-color="#38b6ff" stop-opacity=".45"/>
+      <stop offset="60%" stop-color="#0a5f9e" stop-opacity=".18"/>
+      <stop offset="100%" stop-color="#03121f" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="halo2" cx="50%" cy="50%" r="50%">
+      <stop offset="0" stop-color="#f2ffff" stop-opacity=".6"/>
+      <stop offset="42%" stop-color="#63caff" stop-opacity=".24"/>
+      <stop offset="100%" stop-color="#0a6cff" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="pane2" x1="0.1" y1="0" x2="0.2" y2="1">
+      <stop offset="0" stop-color="#dff8ff" stop-opacity=".06"/>
+      <stop offset="52%" stop-color="#a9e7ff" stop-opacity=".24"/>
+      <stop offset="100%" stop-color="#f2feff" stop-opacity=".88"/>
+    </linearGradient>
+    <linearGradient id="paneEdge2" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#8fdcff" stop-opacity=".12"/>
+      <stop offset="100%" stop-color="#f4ffff" stop-opacity=".95"/>
+    </linearGradient>
+    <linearGradient id="beam2" x1="0" y1="1" x2="0" y2="0">
+      <stop offset="0" stop-color="#e8fdff" stop-opacity=".62"/>
+      <stop offset="45%" stop-color="#8fdcff" stop-opacity=".16"/>
+      <stop offset="100%" stop-color="#8fdcff" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="beamSide2" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#dff8ff" stop-opacity="0"/>
+      <stop offset="55%" stop-color="#a9e6ff" stop-opacity=".16"/>
+      <stop offset="100%" stop-color="#e9fdff" stop-opacity=".5"/>
+    </linearGradient>
+    <radialGradient id="vignette2" cx="50%" cy="46%" r="74%">
+      <stop offset="50%" stop-color="#000" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#000" stop-opacity=".7"/>
+    </radialGradient>
+    <filter id="bLg2" x="-70%" y="-70%" width="240%" height="240%"><feGaussianBlur stdDeviation="52"/></filter>
+    <filter id="bMd2" x="-70%" y="-70%" width="240%" height="240%"><feGaussianBlur stdDeviation="22"/></filter>
+    <filter id="bSm2" x="-70%" y="-70%" width="240%" height="240%"><feGaussianBlur stdDeviation="6"/></filter>
+  </defs>
+
+  <rect width="1600" height="900" fill="url(#sky2)"/>
+  <rect width="1600" height="900" fill="url(#floorGlow2)"/>
+  <ellipse cx="800" cy="470" rx="540" ry="340" fill="url(#halo2)" filter="url(#bLg2)"/>
+
+  <g opacity=".62" filter="url(#bMd2)">
+    <path d="M768 900 L560 0 L636 0 L812 900 Z" fill="url(#beam2)"/>
+    <path d="M832 900 L964 0 L1040 0 L888 900 Z" fill="url(#beam2)" opacity=".85"/>
+    <path d="M700 900 L300 60 L352 34 L786 900 Z" fill="url(#beamSide2)" opacity=".55"/>
+    <path d="M900 900 L1300 60 L1248 34 L814 900 Z" fill="url(#beamSide2)" opacity=".55"/>
+    <path d="M600 900 L60 420 L96 388 L690 900 Z" fill="url(#beamSide2)" opacity=".22"/>
+    <path d="M1000 900 L1540 420 L1504 388 L910 900 Z" fill="url(#beamSide2)" opacity=".22"/>
+  </g>
+
+  <g transform="translate(800 430)" filter="url(#bMd2)" opacity=".95">
+    <rect x="-238" y="-218" width="218" height="196" rx="4" fill="url(#pane2)"/>
+    <rect x="20" y="-218" width="218" height="196" rx="4" fill="url(#pane2)"/>
+    <rect x="-238" y="20" width="218" height="218" rx="4" fill="url(#pane2)"/>
+    <rect x="20" y="20" width="218" height="218" rx="4" fill="url(#pane2)"/>
+  </g>
+
+  <g transform="translate(800 430)">
+    <g fill="url(#pane2)" stroke="url(#paneEdge2)" stroke-width="1.5">
+      <rect x="-238" y="-218" width="218" height="196" rx="3"/>
+      <rect x="20" y="-218" width="218" height="196" rx="3"/>
+      <rect x="-238" y="20" width="218" height="218" rx="3"/>
+      <rect x="20" y="20" width="218" height="218" rx="3"/>
+    </g>
+    <g stroke="#f6ffff" stroke-opacity=".9">
+      <line x1="0" y1="-236" x2="0" y2="256" stroke-width="2.2"/>
+      <line x1="-256" y1="0" x2="256" y2="0" stroke-width="2.2"/>
+    </g>
+    <g stroke="#eafdff" stroke-opacity=".3" stroke-width="1.2">
+      <line x1="-256" y1="-236" x2="256" y2="-236"/>
+      <line x1="-256" y1="256" x2="256" y2="256"/>
+      <line x1="-256" y1="-236" x2="-256" y2="256"/>
+      <line x1="256" y1="-236" x2="256" y2="256"/>
+    </g>
+    <ellipse cx="0" cy="250" rx="215" ry="24" fill="#eafdff" opacity=".55" filter="url(#bSm2)"/>
+  </g>
+
+  <ellipse cx="800" cy="894" rx="320" ry="58" fill="#eafdff" opacity=".24" filter="url(#bMd2)"/>
+  <rect width="1600" height="900" fill="url(#vignette2)"/>
+</svg>
